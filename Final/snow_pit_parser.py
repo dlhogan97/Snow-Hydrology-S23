@@ -197,8 +197,8 @@ ds_data = xr.merge([ds_data, ds_surf_temp,ds_snow_depth])
 
 
 # iterate to set the first value in the temperature variable to thermometer_surface_temp
-for i in range(len(ds_data.time)):
-    ds_data['temperature'].values[i][0] = ds_data['thermometer_surface_temp'].values[i]
+for i, t in enumerate(ds_data.time.values):
+    ds_data.sel(time=t)['temperature'].dropna(dim='depth').values[-1] = ds_data.sel(time=t)['thermometer_surface_temp'].values
 # add attribute to each ir_surface_temp
 ds_data['ir_surface_temp'].attrs['units'] = 'degC'
 ds_data['ir_surface_temp'].attrs['long_name'] = 'Infrared surface temperature from IR thermometer gun'
